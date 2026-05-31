@@ -637,13 +637,13 @@ export default function ProgramasAnaliticosWizard() {
                               </div>
                               <label className="text-[10px] font-black text-univalle-primary hover:underline cursor-pointer">
                                 CAMBIAR
-                                <input type="file" className="hidden" accept="image/*,.pdf" onChange={handleFileUpload} />
+                                <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf" onChange={handleFileUpload} />
                               </label>
                             </div>
                           ) : (
                             <label className="w-full flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white h-12 text-[10px] font-black uppercase tracking-widest rounded-xl cursor-pointer shadow-lg shadow-slate-200 transition-all hover:-translate-y-1">
                               <UploadCloud size={16} className="mr-3" /> Subir Comprobante
-                              <input type="file" className="hidden" accept="image/*,.pdf" onChange={handleFileUpload} />
+                              <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf" onChange={handleFileUpload} />
                             </label>
                           )}
                           <p className="text-[9px] text-slate-400 font-bold text-center uppercase tracking-widest opacity-60">Formatos permitidos: JPG, PNG, PDF</p>

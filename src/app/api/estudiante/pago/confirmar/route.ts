@@ -58,18 +58,21 @@ export async function POST(request: Request) {
     // Guardar voucher en Cloudinary si existe
     let voucherPath = null;
     if (voucherFile) {
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-      if (!allowedTypes.includes(voucherFile.type)) {
-        return NextResponse.json({ error: "El comprobante debe ser una imagen (jpg, jpeg, png, webp)" }, { status: 400 });
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'application/pdf'];
+      const hasAllowedExtension = /\.(jpe?g|png|webp|pdf)$/i.test(voucherFile.name);
+      if (!allowedTypes.includes(voucherFile.type) && !hasAllowedExtension) {
+        return NextResponse.json({ error: "El comprobante debe ser una imagen o PDF (jpg, jpeg, png, webp, pdf)" }, { status: 400 });
       }
 
       const bytes = await voucherFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const base64Data = buffer.toString('base64');
-      const dataUri = `data:${voucherFile.type};base64,${base64Data}`;
+      const mimeType = voucherFile.type || (voucherFile.name.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/jpeg');
+      const dataUri = `data:${mimeType};base64,${base64Data}`;
 
       const uploadResponse = await cloudinary.uploader.upload(dataUri, {
         folder: 'tramites/comprobantes',
+        resource_type: 'auto',
         fetch_format: 'auto',
         quality: 'auto'
       });
