@@ -85,7 +85,10 @@ export default function SeguimientoTramite() {
   const [sendSuccess, setSendSuccess] = useState<string | null>(null);
   const [sentAt, setSentAt] = useState<string | null>(null);
   const [resendingLibrary, setResendingLibrary] = useState(false);
+  const [resendingPayment, setResendingPayment] = useState(false);
+  const [resendPaymentError, setResendPaymentError] = useState<string | null>(null);
   const autoSendStartedRef = useRef(false);
+  const paymentVoucherInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function fetchSeguimiento() {
@@ -260,6 +263,33 @@ export default function SeguimientoTramite() {
       setError(err instanceof Error ? err.message : "No se pudo reenviar a biblioteca");
     } finally {
       setResendingLibrary(false);
+    }
+  };
+
+  const resendPaymentVoucher = async (file: File) => {
+    if (!user?.id_usuario) return;
+    setResendingPayment(true);
+    setResendPaymentError(null);
+    try {
+      const formData = new FormData();
+      formData.append("id_tramite", String(data.tramite.id_tramite));
+      formData.append("userId", String(user.id_usuario));
+      formData.append("voucher", file);
+
+      const res = await fetch("/api/estudiante/pago/reenviar-comprobante", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || "No se pudo reenviar el comprobante");
+      }
+      window.location.reload();
+    } catch (err) {
+      setResendPaymentError(err instanceof Error ? err.message : "No se pudo reenviar el comprobante");
+    } finally {
+      setResendingPayment(false);
+      if (paymentVoucherInputRef.current) paymentVoucherInputRef.current.value = "";
     }
   };
 
@@ -443,6 +473,27 @@ export default function SeguimientoTramite() {
                         </div>
                         <h3 className="text-2xl font-black text-red-900 tracking-tight">Pago Rechazado</h3>
                         <p className="text-red-700 font-medium bg-white/60 p-4 rounded-xl">{data.pago.voucher_observacion || "Comprobante rechazado por el cajero."}</p>
+                        {resendPaymentError && (
+                          <p className="text-red-700 font-bold text-sm bg-white/60 p-4 rounded-xl">{resendPaymentError}</p>
+                        )}
+                        <input
+                          ref={paymentVoucherInputRef}
+                          type="file"
+                          className="hidden"
+                          accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            if (file) void resendPaymentVoucher(file);
+                          }}
+                        />
+                        <Button
+                          onClick={() => paymentVoucherInputRef.current?.click()}
+                          disabled={resendingPayment || !user?.id_usuario}
+                          className="h-12 px-8 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black uppercase text-[10px] tracking-widest gap-2"
+                        >
+                          {resendingPayment ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                          Volver a enviar comprobante
+                        </Button>
                      </div>
                    ) : (
                      <div className="mt-10 py-16 flex flex-col items-center justify-center gap-4 bg-slate-50/50 rounded-[2.5rem] border border-dashed border-slate-200">

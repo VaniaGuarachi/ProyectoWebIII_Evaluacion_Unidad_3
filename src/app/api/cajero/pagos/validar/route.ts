@@ -225,8 +225,8 @@ export async function POST(request: Request) {
       );
 
       await connection.query(
-        "UPDATE univalle_tramites.comprobantes_pago SET estado_revision = 'RECHAZADO' WHERE id_pago = ?",
-        [id_pago]
+        "UPDATE univalle_tramites.comprobantes_pago SET estado_revision = 'RECHAZADO', observacion_revision = ? WHERE id_pago = ?",
+        [reason, id_pago]
       );
 
       const [estadoRechazadoRows] = await connection.query<EstadoRow[]>(
