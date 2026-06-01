@@ -58,7 +58,7 @@ export function Sidebar({ activeMenu, onMenuChange, onLogout, userType }: Sideba
           <img src="/img/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         <div className="flex flex-col text-white">
-          <span className="font-black text-lg tracking-tight leading-tight">Universidad<br/>del Valle</span>
+          <span className="font-black text-base tracking-tight leading-tight">Universidad Privada<br/>del Valle</span>
           <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.22em] text-white/55">Gestión académica</span>
         </div>
       </div>
@@ -134,7 +134,7 @@ export function Sidebar({ activeMenu, onMenuChange, onLogout, userType }: Sideba
           </button>
         )}
         <div className="py-4 border-t border-white/15 text-xs text-white/55">
-          <p>© 2026 Universidad del Valle</p>
+          <p>© 2026 Universidad Privada del Valle</p>
           <p className="mt-1">Sistema Web Académico</p>
         </div>
       </div>

@@ -1,7 +1,6 @@
-import { NextResponse } from 'next/server';
-import { pool } from '@/lib/db';
+import { NextResponse } from "next/server";
+import { pool } from "@/lib/db";
 
-// Query base reutilizable que trae todos los campos necesarios para VER DETALLES
 const BASE_SELECT = `
   SELECT 
     s.id_solvencia,
@@ -35,33 +34,25 @@ const BASE_SELECT = `
 
 export async function GET() {
   try {
-    // 1. Estadísticas globales
-    const [stats]: any = await pool.query(`
-      SELECT 
-        SUM(CASE WHEN estado_solvencia = 'PENDIENTE_VERIFICACION' THEN 1 ELSE 0 END) AS pendientes,
-        SUM(CASE WHEN estado_solvencia = 'SIN_DEUDAS'             THEN 1 ELSE 0 END) AS sinDeudas,
-        SUM(CASE WHEN estado_solvencia = 'CON_DEUDAS'             THEN 1 ELSE 0 END) AS conDeudas
-      FROM univalle_tramites.solvencias
-    `);
-
-    // 2. Pendientes de verificación
-    const [pendientes]: any = await pool.query(
-      BASE_SELECT + `WHERE s.estado_solvencia = 'PENDIENTE_VERIFICACION' ORDER BY s.fecha_solicitud DESC`
-    );
-
-    // 3. Ya verificados (recientes)
-    const [verificados]: any = await pool.query(
-      BASE_SELECT + `WHERE s.estado_solvencia IN ('SIN_DEUDAS', 'CON_DEUDAS') ORDER BY s.fecha_resolucion DESC LIMIT 20`
-    );
+    const [[stats], [pendientes], [verificados]]: any = await Promise.all([
+      pool.query(`
+        SELECT 
+          SUM(CASE WHEN estado_solvencia = 'PENDIENTE_VERIFICACION' THEN 1 ELSE 0 END) AS pendientes,
+          SUM(CASE WHEN estado_solvencia = 'SIN_DEUDAS'             THEN 1 ELSE 0 END) AS sinDeudas,
+          SUM(CASE WHEN estado_solvencia = 'CON_DEUDAS'             THEN 1 ELSE 0 END) AS conDeudas
+        FROM univalle_tramites.solvencias
+      `),
+      pool.query(BASE_SELECT + `WHERE s.estado_solvencia = 'PENDIENTE_VERIFICACION' ORDER BY s.fecha_solicitud DESC`),
+      pool.query(BASE_SELECT + `WHERE s.estado_solvencia IN ('SIN_DEUDAS', 'CON_DEUDAS') ORDER BY s.fecha_resolucion DESC LIMIT 20`),
+    ]);
 
     return NextResponse.json({
-      stats:      stats[0] || { pendientes: 0, sinDeudas: 0, conDeudas: 0 },
-      pendientes: pendientes  || [],
-      verificados: verificados || []
+      stats: stats[0] || { pendientes: 0, sinDeudas: 0, conDeudas: 0 },
+      pendientes: pendientes || [],
+      verificados: verificados || [],
     });
-
   } catch (error: any) {
-    console.error('Error en dashboard bibliotecario:', error);
+    console.error("Error en dashboard bibliotecario:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

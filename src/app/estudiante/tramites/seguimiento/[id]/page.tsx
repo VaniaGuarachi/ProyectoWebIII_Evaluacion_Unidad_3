@@ -680,25 +680,25 @@ export default function SeguimientoTramite() {
                       )}
                     </div>
                   ) : (
-                    <div className="mt-10 py-16 flex flex-col items-center justify-center gap-5 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm relative overflow-hidden">
+                    <div className="mt-6 py-7 flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
                       <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-[#8C1B1B] via-[#5E7693] to-[#8C1B1B]" />
-                      <div className="w-24 h-24 rounded-full bg-[#8C1B1B]/10 flex items-center justify-center">
-                        <Loader2 className="animate-spin text-[#8C1B1B]" size={44} />
+                      <div className="w-14 h-14 rounded-full bg-[#8C1B1B]/10 flex items-center justify-center">
+                        <Loader2 className="animate-spin text-[#8C1B1B]" size={28} />
                       </div>
                       <div className="text-center max-w-lg px-6">
-                        <h3 className="text-2xl font-black text-slate-900 tracking-tight">{sending ? "Enviando tu tr\u00e1mite..." : "Tu tr\u00e1mite fue enviado correctamente."}</h3>
-                        <p className="text-slate-500 font-bold mt-3 leading-relaxed">{sendSuccess || "El \u00e1rea de tr\u00e1mites procesar\u00e1 tu solicitud en un plazo aproximado de 48 horas."}</p>
+                        <h3 className="text-lg font-black text-slate-900 tracking-tight">{sending ? "Enviando tu tr\u00e1mite..." : "Tu tr\u00e1mite fue enviado correctamente."}</h3>
+                        <p className="text-sm text-slate-500 font-bold mt-1 leading-relaxed">{sendSuccess || "El \u00e1rea de tr\u00e1mites procesar\u00e1 tu solicitud en un plazo aproximado de 48 horas."}</p>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-2xl px-6 pt-4">
-                        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-2xl px-6 pt-2">
+                        <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-center">
                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Estado</p>
                           <p className="text-xs font-black text-slate-800 mt-1">{data.tramite.estado_nombre}</p>
                         </div>
-                        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+                        <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-center">
                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Código</p>
                           <p className="text-xs font-black text-slate-800 mt-1">{data.tramite.codigo_seguimiento}</p>
                         </div>
-                        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center">
+                        <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-center">
                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Fecha y hora</p>
                           <p className="text-xs font-black text-slate-800 mt-1">
                             {sentAt

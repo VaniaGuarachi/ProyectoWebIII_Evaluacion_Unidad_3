@@ -161,19 +161,18 @@ export default function ProgramasAnaliticosWizard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      // 1. Fetch tipos
-      const resTipos = await fetch('/api/tipos-tramite');
-      const dataTipos = await resTipos.json();
+      const userId = user?.id_usuario;
+      const [resTipos, resCarreras, resPerfil, resSolv] = await Promise.all([
+        fetch('/api/tipos-tramite'),
+        fetch('/api/carreras'),
+        userId ? fetch(`/api/estudiante/perfil?userId=${userId}`) : null,
+        userId ? fetch(`/api/estudiante/solvencia?userId=${userId}`) : null,
+      ]);
+      const [dataTipos, dataCarreras] = await Promise.all([resTipos.json(), resCarreras.json()]);
       setTiposTramite(dataTipos);
-
-      // 2. Fetch carreras
-      const resCarreras = await fetch('/api/carreras');
-      const dataCarreras = await resCarreras.json();
       setCarreras(dataCarreras);
 
-      // 3. Fetch perfil del estudiante para completar datos desde BD
-      if (user?.id_usuario) {
-        const resPerfil = await fetch(`/api/estudiante/perfil?userId=${user.id_usuario}`);
+      if (resPerfil && resSolv) {
         const dataPerfil = await resPerfil.json();
         if (resPerfil.ok && dataPerfil.perfil) {
           const perfil = dataPerfil.perfil;
@@ -198,8 +197,6 @@ export default function ProgramasAnaliticosWizard() {
             correo_envio: prev.correo_envio || ''
           }));
         }
-
-        const resSolv = await fetch(`/api/estudiante/solvencia?userId=${user.id_usuario}`);
         const dataSolv = await resSolv.json();
         setSolvenciaState(dataSolv);
       }

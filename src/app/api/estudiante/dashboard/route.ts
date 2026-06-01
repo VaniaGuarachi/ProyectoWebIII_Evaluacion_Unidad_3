@@ -35,16 +35,16 @@ export async function GET(request: Request) {
       ORDER BY t.fecha_solicitud DESC
       LIMIT 5
     `;
-    const [procedures]: any = await pool.query(proceduresQuery, [student.id_estudiante]);
-
-    // 3. Cantidad de pagos pendientes
     const paymentsQuery = `
       SELECT COUNT(*) as pendientes
       FROM univalle_tramites.pagos p
       JOIN univalle_tramites.tramites t ON p.id_tramite = t.id_tramite
       WHERE t.id_estudiante = ? AND p.estado_pago = 'PENDIENTE'
     `;
-    const [paymentRows]: any = await pool.query(paymentsQuery, [student.id_estudiante]);
+    const [[procedures], [paymentRows]]: any = await Promise.all([
+      pool.query(proceduresQuery, [student.id_estudiante]),
+      pool.query(paymentsQuery, [student.id_estudiante]),
+    ]);
     const pendingPayments = paymentRows[0].pendientes;
 
     return NextResponse.json({

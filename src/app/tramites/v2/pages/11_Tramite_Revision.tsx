@@ -383,9 +383,9 @@ export default function TramiteRevision({ tramite, onBack, onFinalize }: Props) 
           </Panel>
 
           {message && (
-            <div className={cn("p-4 rounded-xl border flex items-start gap-3", message.type === "ok" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-600 border-red-100")}>
-              <Info size={16} className="shrink-0 mt-0.5" />
-              <p className="text-xs font-bold">{message.text}</p>
+            <div className={cn("p-3 rounded-lg border flex items-start gap-2", message.type === "ok" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-600 border-red-100")}>
+              <Info size={14} className="shrink-0 mt-0.5" />
+              <p className="text-[11px] font-bold leading-snug">{message.text}</p>
             </div>
           )}
 
