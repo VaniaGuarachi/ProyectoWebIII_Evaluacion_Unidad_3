@@ -100,28 +100,28 @@ export default function TramitesV2Page() {
     <div className="flex h-screen w-full overflow-hidden bg-[#f4f6fa] subtle-grid">
       {/* Success Overlay */}
       {showSuccess && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-500">
-          <div className="bg-white rounded-[4rem] p-16 max-w-2xl w-full text-center shadow-[0_50px_100px_rgba(0,0,0,0.3)] border border-white relative overflow-hidden animate-in zoom-in-95 duration-500">
-            <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-univalle-primary via-univalle-action to-univalle-primary" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-500">
+          <div className="bg-white rounded-3xl p-8 max-w-lg w-full text-center shadow-[0_35px_75px_rgba(0,0,0,0.28)] border border-white relative overflow-hidden animate-in zoom-in-95 duration-500">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-univalle-primary via-univalle-action to-univalle-primary" />
             
-            <div className="w-32 h-32 bg-emerald-100 text-emerald-600 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-xl shadow-emerald-100 rotate-3 animate-bounce">
-              <CheckCircle2 size={64} strokeWidth={3} />
+            <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-100 rotate-3 animate-bounce">
+              <CheckCircle2 size={42} strokeWidth={3} />
             </div>
 
-            <h2 className="text-5xl font-black text-slate-900 tracking-tighter italic uppercase mb-4">Trámite Completado</h2>
-            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-10 leading-relaxed">
+            <h2 className="text-3xl font-black text-slate-900 tracking-tighter italic uppercase mb-2">Trámite Completado</h2>
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mb-5 leading-relaxed">
               El documento ha sido emitido, firmado y cargado al servidor con éxito. <br />
               El estudiante ya puede descargar su certificación oficial.
             </p>
 
-            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 mb-12">
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Código de Verificación Único</p>
-               <p className="text-2xl font-black text-univalle-primary font-mono tracking-wider">{successCode}</p>
+               <p className="text-lg font-black text-univalle-primary font-mono tracking-wider">{successCode}</p>
             </div>
 
             <button 
               onClick={() => setShowSuccess(false)}
-              className="w-full py-6 bg-slate-900 hover:bg-univalle-action text-white rounded-[2rem] font-black text-sm tracking-[0.3em] uppercase transition-all duration-300 shadow-2xl active:scale-95"
+              className="w-full py-4 bg-slate-900 hover:bg-univalle-action text-white rounded-xl font-black text-xs tracking-[0.22em] uppercase transition-all duration-300 shadow-lg active:scale-95"
             >
               ENTENDIDO Y CONTINUAR
             </button>
@@ -138,7 +138,6 @@ export default function TramitesV2Page() {
             setActiveMenu(menu as ActiveMenu);
             setActiveView('08');
           }}
-          onLogout={() => handleNavigate('01')}
           userType="tramite"
         />
       </div>
